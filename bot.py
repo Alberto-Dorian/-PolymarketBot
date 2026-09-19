@@ -1,6 +1,7 @@
 import json
 import os
 import urllib.request
+from datetime import datetime, timezone
 
 API_URL = (
     "https://gamma-api.polymarket.com/markets"
@@ -8,22 +9,23 @@ API_URL = (
 )
 
 ARCHIVO_PRECIOS = "precios_anteriores.json"
+ARCHIVO_HISTORIAL = "historial_movimientos.json"
 
 
-def cargar_precios():
-    if not os.path.exists(ARCHIVO_PRECIOS):
-        return {}
+def cargar_json(archivo, valor_por_defecto):
+    if not os.path.exists(archivo):
+        return valor_por_defecto
 
     try:
-        with open(ARCHIVO_PRECIOS, "r", encoding="utf-8") as archivo:
-            return json.load(archivo)
+        with open(archivo, "r", encoding="utf-8") as f:
+            return json.load(f)
     except Exception:
-        return {}
+        return valor_por_defecto
 
 
-def guardar_precios(precios):
-    with open(ARCHIVO_PRECIOS, "w", encoding="utf-8") as archivo:
-        json.dump(precios, archivo, indent=2, ensure_ascii=False)
+def guardar_json(archivo, datos):
+    with open(archivo, "w", encoding="utf-8") as f:
+        json.dump(datos, f, indent=2, ensure_ascii=False)
 
 
 def obtener_mercados():
@@ -53,10 +55,10 @@ def obtener_mercados():
 
 
 def analizar_mercados(mercados):
-    anteriores = cargar_precios()
+    anteriores = cargar_json(ARCHIVO_PRECIOS, {})
+    historial = cargar_json(ARCHIVO_HISTORIAL, [])
     actuales = {}
-
-    cambios = []
+    movimientos = []
 
     print("🧠 ANALIZADOR DE MOVIMIENTO")
     print("=" * 50)
@@ -71,7 +73,11 @@ def analizar_mercados(mercados):
             continue
 
         try:
-            precios = json.loads(precios) if isinstance(precios, str) else precios
+            precios = (
+                json.loads(precios)
+                if isinstance(precios, str)
+                else precios
+            )
 
             if len(precios) < 2:
                 continue
@@ -88,37 +94,51 @@ def analizar_mercados(mercados):
                 "no": precio_no
             }
 
-            if slug in anteriores:
-                anterior_si = float(anteriores[slug]["si"])
-                anterior_no = float(anteriores[slug]["no"])
+            if slug not in anteriores:
+                continue
 
-                cambio_si = precio_si - anterior_si
-                cambio_no = precio_no - anterior_no
+            anterior_si = float(anteriores[slug]["si"])
+            anterior_no = float(anteriores[slug]["no"])
 
-                if abs(cambio_si) >= 0.005 or abs(cambio_no) >= 0.005:
-                    cambios.append({
-                        "pregunta": pregunta,
-                        "si": precio_si,
-                        "no": precio_no,
-                        "cambio_si": cambio_si,
-                        "cambio_no": cambio_no
-                    })
+            cambio_si = precio_si - anterior_si
+            cambio_no = precio_no - anterior_no
+
+            porcentaje_si = (cambio_si / anterior_si) * 100
+            porcentaje_no = (cambio_no / anterior_no) * 100
+
+            if abs(cambio_si) >= 0.005 or abs(cambio_no) >= 0.005:
+                movimiento = {
+                    "fecha": datetime.now(timezone.utc).isoformat(),
+                    "pregunta": pregunta,
+                    "slug": slug,
+                    "precio_si": precio_si,
+                    "precio_no": precio_no,
+                    "cambio_si": cambio_si,
+                    "cambio_no": cambio_no,
+                    "porcentaje_si": porcentaje_si,
+                    "porcentaje_no": porcentaje_no
+                }
+
+                movimientos.append(movimiento)
+                historial.append(movimiento)
 
         except (ValueError, TypeError, json.JSONDecodeError):
             continue
 
-    guardar_precios(actuales)
+    guardar_json(ARCHIVO_PRECIOS, actuales)
+    guardar_json(ARCHIVO_HISTORIAL, historial[-500:])
 
     print(f"📊 Mercados guardados: {len(actuales)}")
-    print(f"🔎 Movimientos detectados: {len(cambios)}")
+    print(f"🔎 Movimientos detectados: {len(movimientos)}")
     print()
 
-    for i, cambio in enumerate(cambios[:10], start=1):
-        print(f"{i}. {cambio['pregunta']}")
-        print(f"   Sí: {cambio['si']:.4f}")
-        print(f"   Cambio Sí: {cambio['cambio_si']:+.4f}")
-        print(f"   No: {cambio['no']:.4f}")
-        print(f"   Cambio No: {cambio['cambio_no']:+.4f}")
+    for i, movimiento in enumerate(movimientos[:10], start=1):
+        print(f"{i}. {movimiento['pregunta']}")
+        print(f"   Sí: {movimiento['precio_si']:.4f}")
+        print(f"   Cambio: {movimiento['cambio_si']:+.4f}")
+        print(f"   Cambio %: {movimiento['porcentaje_si']:+.2f}%")
+        print(f"   No: {movimiento['precio_no']:.4f}")
+        print(f"   Cambio % No: {movimiento['porcentaje_no']:+.2f}%")
         print()
 
 
