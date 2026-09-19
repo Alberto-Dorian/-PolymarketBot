@@ -1,38 +1,60 @@
 {
   "estado": "ACTIVO",
   "modo": "SIMULACION",
-  "ultima_ejecucion": "2026-09-19T08:59:42.356466+00:00",
+  "ultima_ejecucion": "2026-09-19T13:04:10.175398+00:00",
   "capital": 100.0,
-  "operaciones": 1,
+  "operaciones": 2,
   "nuevas_operaciones": 1,
   "mercados_recibidos": 50,
   "mercados_guardados": 50,
   "mercados_comparados": 50,
   "movimientos_detectados": 1,
-  "mayor_movimiento": 0.0024999999999999988,
+  "mayor_movimiento": 0.0020000000000000018,
   "umbral": 0.002,
   "top_movimientos": [
     {
-      "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
-      "slug": "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299",
-      "movimiento": 0.0024999999999999988,
-      "cambio_si": -0.0024999999999999988,
-      "cambio_no": 0.0024999999999999467,
-      "precio_si": 0.02,
-      "precio_no": 0.98,
-      "porcentaje_si": -11.111111111111107,
-      "porcentaje_no": 0.2557544757033194
-    },
-    {
       "pregunta": "Xi Jinping out before 2027?",
       "slug": "xi-jinping-out-before-2027",
+      "movimiento": 0.0020000000000000018,
+      "cambio_si": -0.0020000000000000018,
+      "cambio_no": 0.0020000000000000018,
+      "precio_si": 0.0365,
+      "precio_no": 0.9635,
+      "porcentaje_si": -5.194805194805199,
+      "porcentaje_no": 0.2080083203328135
+    },
+    {
+      "pregunta": "Will Ro Khanna win the 2028 Democratic presidential nomination?",
+      "slug": "will-ro-khanna-win-the-2028-democratic-presidential-nomination",
       "movimiento": 0.0010000000000000009,
       "cambio_si": -0.0010000000000000009,
       "cambio_no": 0.0010000000000000009,
-      "precio_si": 0.0385,
-      "precio_no": 0.9615,
-      "porcentaje_si": -2.5316455696202556,
-      "porcentaje_no": 0.10411244143675177
+      "precio_si": 0.0135,
+      "precio_no": 0.9865,
+      "porcentaje_si": -6.896551724137937,
+      "porcentaje_no": 0.10147133434804675
+    },
+    {
+      "pregunta": "Will Josh Shapiro win the 2028 Democratic presidential nomination?",
+      "slug": "will-josh-shapiro-win-the-2028-democratic-presidential-nomination-977",
+      "movimiento": 0.0005000000000000004,
+      "cambio_si": 0.0005000000000000004,
+      "cambio_no": -0.0004999999999999449,
+      "precio_si": 0.063,
+      "precio_no": 0.937,
+      "porcentaje_si": 0.8000000000000007,
+      "porcentaje_no": -0.05333333333332746
+    },
+    {
+      "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
+      "slug": "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299",
+      "movimiento": 0.0005000000000000004,
+      "cambio_si": 0.0005000000000000004,
+      "cambio_no": -0.0004999999999999449,
+      "precio_si": 0.0205,
+      "precio_no": 0.9795,
+      "porcentaje_si": 2.500000000000002,
+      "porcentaje_no": -0.05102040816325969
     },
     {
       "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
@@ -68,17 +90,6 @@
       "porcentaje_no": 0.0
     },
     {
-      "pregunta": "Will Josh Shapiro win the 2028 Democratic presidential nomination?",
-      "slug": "will-josh-shapiro-win-the-2028-democratic-presidential-nomination-977",
-      "movimiento": 0.0,
-      "cambio_si": 0.0,
-      "cambio_no": 0.0,
-      "precio_si": 0.0625,
-      "precio_no": 0.9375,
-      "porcentaje_si": 0.0,
-      "porcentaje_no": 0.0
-    },
-    {
       "pregunta": "Will Wes Moore win the 2028 Democratic presidential nomination?",
       "slug": "will-wes-moore-win-the-2028-democratic-presidential-nomination-714",
       "movimiento": 0.0,
@@ -108,17 +119,6 @@
       "cambio_no": 0.0,
       "precio_si": 0.0965,
       "precio_no": 0.9035,
-      "porcentaje_si": 0.0,
-      "porcentaje_no": 0.0
-    },
-    {
-      "pregunta": "Will Gretchen Whitmer win the 2028 Democratic presidential nomination?",
-      "slug": "will-gretchen-whitmer-win-the-2028-democratic-presidential-nomination-676",
-      "movimiento": 0.0,
-      "cambio_si": 0.0,
-      "cambio_no": 0.0,
-      "precio_si": 0.0045,
-      "precio_no": 0.9955,
       "porcentaje_si": 0.0,
       "porcentaje_no": 0.0
     }

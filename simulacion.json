@@ -8,6 +8,14 @@
       "monto": 10.0,
       "cambio": 0.0024999999999999467,
       "tipo": "SIMULACION"
+    },
+    {
+      "fecha": "2026-09-19T13:04:10.175398+00:00",
+      "pregunta": "Xi Jinping out before 2027?",
+      "lado": "NO",
+      "monto": 10.0,
+      "cambio": 0.0020000000000000018,
+      "tipo": "SIMULACION"
     }
   ]
 }

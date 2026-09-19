@@ -1,8 +1,8 @@
 {
   "xi-jinping-out-before-2027": {
     "pregunta": "Xi Jinping out before 2027?",
-    "si": 0.0385,
-    "no": 0.9615
+    "si": 0.0365,
+    "no": 0.9635
   },
   "will-gavin-newsom-win-the-2028-democratic-presidential-nomination-568": {
     "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
@@ -21,8 +21,8 @@
   },
   "will-josh-shapiro-win-the-2028-democratic-presidential-nomination-977": {
     "pregunta": "Will Josh Shapiro win the 2028 Democratic presidential nomination?",
-    "si": 0.0625,
-    "no": 0.9375
+    "si": 0.063,
+    "no": 0.937
   },
   "will-wes-moore-win-the-2028-democratic-presidential-nomination-714": {
     "pregunta": "Will Wes Moore win the 2028 Democratic presidential nomination?",
@@ -91,8 +91,8 @@
   },
   "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299": {
     "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
-    "si": 0.02,
-    "no": 0.98
+    "si": 0.0205,
+    "no": 0.9795
   },
   "will-gina-raimondo-win-the-2028-democratic-presidential-nomination-676": {
     "pregunta": "Will Gina Raimondo win the 2028 Democratic presidential nomination?",
@@ -216,8 +216,8 @@
   },
   "will-ro-khanna-win-the-2028-democratic-presidential-nomination": {
     "pregunta": "Will Ro Khanna win the 2028 Democratic presidential nomination?",
-    "si": 0.0145,
-    "no": 0.9855
+    "si": 0.0135,
+    "no": 0.9865
   },
   "will-james-talarico-win-the-2028-democratic-presidential-nomination": {
     "pregunta": "Will James Talarico win the 2028 Democratic presidential nomination?",
