@@ -12,7 +12,7 @@ ARCHIVO_PRECIOS = "precios_anteriores.json"
 ARCHIVO_HISTORIAL = "historial_movimientos.json"
 ARCHIVO_SIMULACION = "simulacion.json"
 
-UMBRAL_MOVIMIENTO = 0.005
+UMBRAL_MOVIMIENTO = 0.002
 CAPITAL_SIMULADO = 100.0
 MONTO_POR_OPERACION = 10.0
 
