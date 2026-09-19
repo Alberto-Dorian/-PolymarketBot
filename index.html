@@ -19,14 +19,14 @@ body {
 }
 
 header {
-    padding: 25px 20px;
+    padding: 24px 20px;
     background: #0d111c;
     border-bottom: 1px solid #202738;
 }
 
 header h1 {
     margin: 0;
-    font-size: 26px;
+    font-size: 27px;
 }
 
 header p {
@@ -35,17 +35,17 @@ header p {
 }
 
 .container {
-    padding: 20px;
     max-width: 1000px;
     margin: auto;
+    padding: 20px;
 }
 
 .status {
     background: #101827;
-    padding: 18px;
-    border-radius: 16px;
-    margin-bottom: 20px;
     border: 1px solid #202a3b;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 18px;
 }
 
 .online {
@@ -63,7 +63,7 @@ header p {
     background: #101827;
     border: 1px solid #202a3b;
     border-radius: 16px;
-    padding: 18px;
+    padding: 17px;
 }
 
 .card small {
@@ -73,22 +73,22 @@ header p {
 .card strong {
     display: block;
     margin-top: 8px;
-    font-size: 25px;
+    font-size: 24px;
 }
 
 .section {
-    margin-top: 25px;
+    margin-top: 28px;
 }
 
 .section h2 {
-    font-size: 19px;
+    font-size: 20px;
 }
 
 .market {
     background: #101827;
     border: 1px solid #202a3b;
-    border-radius: 14px;
-    padding: 15px;
+    border-radius: 16px;
+    padding: 16px;
     margin-bottom: 10px;
 }
 
@@ -103,22 +103,37 @@ header p {
     font-size: 14px;
 }
 
+.movement {
+    margin-top: 9px;
+    font-size: 14px;
+}
+
 .refresh {
     margin-top: 20px;
-    padding: 12px 18px;
+    padding: 13px 20px;
     border: none;
     border-radius: 12px;
-    background: #ffffff;
-    color: #000;
+    background: white;
+    color: black;
     font-weight: bold;
-    cursor: pointer;
+    font-size: 15px;
 }
 
 .footer {
     text-align: center;
-    padding: 30px;
+    padding: 35px;
     color: #657087;
     font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card strong {
+        font-size: 21px;
+    }
 }
 </style>
 </head>
@@ -133,10 +148,23 @@ header p {
 <div class="container">
 
     <div class="status">
-        Estado del sistema:
-        <span class="online">● ACTIVO</span>
+        Estado:
+        <span class="online">
+            ● <span id="estado">CARGANDO</span>
+        </span>
+
         <br>
-        <small>Modo simulación</small>
+
+        <small>
+            Modo: <span id="modo">SIMULACIÓN</span>
+        </small>
+
+        <br>
+
+        <small>
+            Última ejecución:
+            <span id="ultima">Cargando...</span>
+        </small>
     </div>
 
     <div class="cards">
@@ -153,32 +181,42 @@ header p {
 
         <div class="card">
             <small>🎯 Umbral</small>
-            <strong id="umbral">0.002</strong>
+            <strong id="umbral">0.002000</strong>
         </div>
 
         <div class="card">
             <small>📡 Mercados</small>
-            <strong id="mercados">50</strong>
+            <strong id="mercados">0</strong>
+        </div>
+
+        <div class="card">
+            <small>🔍 Comparados</small>
+            <strong id="comparados">0</strong>
+        </div>
+
+        <div class="card">
+            <small>📈 Mayor movimiento</small>
+            <strong id="mayor">0.000000</strong>
         </div>
 
     </div>
 
     <div class="section">
-        <h2>🏆 Radar de mercados</h2>
+        <h2>🏆 TOP 10 MAYORES MOVIMIENTOS</h2>
 
         <div id="radar">
-            Cargando datos...
+            Cargando radar...
         </div>
     </div>
 
     <button class="refresh" onclick="cargarDatos()">
-        🔄 Actualizar
+        🔄 Actualizar datos
     </button>
 
 </div>
 
 <div class="footer">
-    Polymarket Bot • Simulación
+    Polymarket Bot · Modo simulación
 </div>
 
 <script>
@@ -187,53 +225,113 @@ async function cargarDatos() {
 
     try {
 
-        const respuesta =
-            await fetch("precios_anteriores.json?nocache=" + Date.now());
+        const respuesta = await fetch(
+            "dashboard.json?nocache=" + Date.now()
+        );
 
-        const mercados =
-            await respuesta.json();
+        if (!respuesta.ok) {
+            throw new Error("Dashboard no disponible");
+        }
 
-        const lista =
-            Object.values(mercados);
+        const datos = await respuesta.json();
+
+        document.getElementById("estado").innerText =
+            datos.estado || "ACTIVO";
+
+        document.getElementById("modo").innerText =
+            datos.modo || "SIMULACION";
+
+        document.getElementById("capital").innerText =
+            "$" + Number(datos.capital || 0).toFixed(2);
+
+        document.getElementById("operaciones").innerText =
+            datos.operaciones || 0;
+
+        document.getElementById("umbral").innerText =
+            Number(datos.umbral || 0).toFixed(6);
 
         document.getElementById("mercados").innerText =
-            lista.length;
+            datos.mercados_recibidos || 0;
+
+        document.getElementById("comparados").innerText =
+            datos.mercados_comparados || 0;
+
+        document.getElementById("mayor").innerText =
+            Number(datos.mayor_movimiento || 0).toFixed(6);
+
+        if (datos.ultima_ejecucion) {
+
+            const fecha = new Date(
+                datos.ultima_ejecucion
+            );
+
+            document.getElementById("ultima").innerText =
+                fecha.toLocaleString("es-MX");
+
+        }
 
         const radar =
             document.getElementById("radar");
 
         radar.innerHTML = "";
 
-        lista.slice(0, 10).forEach((mercado, index) => {
+        const lista =
+            datos.top_movimientos || [];
 
-            const div =
-                document.createElement("div");
+        if (lista.length === 0) {
 
-            div.className = "market";
+            radar.innerHTML =
+                "<div class='market'>No hay movimientos todavía.</div>";
 
-            div.innerHTML = `
-                <div class="market-title">
-                    ${index + 1}. ${mercado.pregunta}
-                </div>
+        } else {
 
-                <div class="values">
-                    Sí: ${Number(mercado.si).toFixed(4)}
-                    &nbsp; | &nbsp;
-                    No: ${Number(mercado.no).toFixed(4)}
-                </div>
-            `;
+            lista.forEach((mercado, index) => {
 
-            radar.appendChild(div);
+                const div =
+                    document.createElement("div");
 
-        });
+                div.className = "market";
+
+                div.innerHTML = `
+                    <div class="market-title">
+                        ${index + 1}. ${mercado.pregunta}
+                    </div>
+
+                    <div class="values">
+                        Sí:
+                        ${Number(mercado.precio_si).toFixed(4)}
+                        &nbsp; | &nbsp;
+                        No:
+                        ${Number(mercado.precio_no).toFixed(4)}
+                    </div>
+
+                    <div class="movement">
+                        Movimiento:
+                        ${Number(mercado.movimiento).toFixed(6)}
+                        <br>
+                        Cambio Sí:
+                        ${Number(mercado.cambio_si).toFixed(6)}
+                        <br>
+                        Cambio No:
+                        ${Number(mercado.cambio_no).toFixed(6)}
+                    </div>
+                `;
+
+                radar.appendChild(div);
+
+            });
+
+        }
 
     } catch (error) {
 
+        document.getElementById("estado").innerText =
+            "SIN DATOS";
+
         document.getElementById("radar").innerHTML =
-            "⚠️ No se pudieron cargar los datos.";
+            "<div class='market'>⚠️ Esperando la primera actualización del bot.</div>";
 
     }
-
 }
 
 cargarDatos();
