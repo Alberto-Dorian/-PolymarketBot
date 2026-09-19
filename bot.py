@@ -1,12 +1,6 @@
 import json
-import os
 import urllib.request
 from datetime import datetime, timezone
-
-
-# ============================================================
-# CONFIGURACIÓN
-# ============================================================
 
 API_URL = (
     "https://gamma-api.polymarket.com/markets"
@@ -17,98 +11,44 @@ ARCHIVO_PRECIOS = "precios_anteriores.json"
 ARCHIVO_HISTORIAL = "historial_movimientos.json"
 ARCHIVO_SIMULACION = "simulacion.json"
 
-# Sensibilidad del detector
 UMBRAL_MOVIMIENTO = 0.002
-
-# SIMULACIÓN SOLAMENTE
 CAPITAL_SIMULADO = 100.0
 MONTO_POR_OPERACION = 10.0
 
 
-# ============================================================
-# FUNCIONES JSON
-# ============================================================
-
 def cargar_json(archivo, valor_por_defecto):
-    if not os.path.exists(archivo):
-        return valor_por_defecto
-
     try:
         with open(archivo, "r", encoding="utf-8") as f:
             return json.load(f)
-
-    except Exception:
+    except (FileNotFoundError, json.JSONDecodeError):
         return valor_por_defecto
 
 
 def guardar_json(archivo, datos):
     with open(archivo, "w", encoding="utf-8") as f:
-        json.dump(
-            datos,
-            f,
-            indent=2,
-            ensure_ascii=False
-        )
+        json.dump(datos, f, ensure_ascii=False, indent=2)
 
-
-# ============================================================
-# CONSULTAR POLYMARKET
-# ============================================================
 
 def obtener_mercados():
+    request = urllib.request.Request(
+        API_URL,
+        headers={
+            "User-Agent": "Mozilla/5.0 PolymarketBot/1.0",
+            "Accept": "application/json",
+        },
+    )
 
-    print("🤖 PolymarketBot iniciando...")
-    print("📡 Consultando mercados activos...")
-    print()
+    with urllib.request.urlopen(request, timeout=30) as response:
+        data = json.loads(response.read().decode("utf-8"))
 
-    try:
+    print(f"✅ Mercados recibidos: {len(data)}")
 
-        request = urllib.request.Request(
-            API_URL,
-            headers={
-                "User-Agent": "Mozilla/5.0 PolymarketBot/1.0",
-                "Accept": "application/json",
-            },
-        )
+    analizar_mercados(data)
 
-        with urllib.request.urlopen(
-            request,
-            timeout=30
-        ) as response:
-
-            data = json.loads(
-                response.read().decode("utf-8")
-            )
-
-        print(
-            f"✅ Mercados recibidos: {len(data)}"
-        )
-        print()
-
-        analizar_mercados(data)
-
-    except Exception as error:
-
-        print(
-            f"❌ Error: {error}"
-        )
-
-
-# ============================================================
-# ANALIZAR MERCADOS
-# ============================================================
 
 def analizar_mercados(mercados):
-
-    anteriores = cargar_json(
-        ARCHIVO_PRECIOS,
-        {}
-    )
-
-    historial = cargar_json(
-        ARCHIVO_HISTORIAL,
-        []
-    )
+    anteriores = cargar_json(ARCHIVO_PRECIOS, {})
+    historial = cargar_json(ARCHIVO_HISTORIAL, [])
 
     simulacion = cargar_json(
         ARCHIVO_SIMULACION,
@@ -119,42 +59,21 @@ def analizar_mercados(mercados):
     )
 
     actuales = {}
-
     movimientos = []
+    mayores_movimientos = []
 
-    # Radar del mayor movimiento encontrado
     mayor_movimiento = 0.0
-
-    print("🧠 ANALIZADOR DE MOVIMIENTO")
-    print("=" * 50)
-    print()
-
-    # ========================================================
-    # RECORRER LOS MERCADOS
-    # ========================================================
 
     for market in mercados:
 
-        pregunta = market.get(
-            "question",
-            "Sin nombre"
-        )
-
-        slug = market.get(
-            "slug",
-            ""
-        )
-
-        precios = market.get(
-            "outcomePrices"
-        )
+        pregunta = market.get("question", "Sin nombre")
+        slug = market.get("slug", "")
+        precios = market.get("outcomePrices")
 
         if not slug or not precios:
             continue
 
         try:
-
-            # Convertir precios si vienen como texto JSON
             if isinstance(precios, str):
                 precios = json.loads(precios)
 
@@ -167,14 +86,12 @@ def analizar_mercados(mercados):
             if precio_si <= 0 or precio_no <= 0:
                 continue
 
-            # Guardar precios actuales
             actuales[slug] = {
                 "pregunta": pregunta,
                 "si": precio_si,
                 "no": precio_no
             }
 
-            # Primera vez que vemos este mercado
             if slug not in anteriores:
                 continue
 
@@ -186,25 +103,11 @@ def analizar_mercados(mercados):
                 anteriores[slug].get("no", 0)
             )
 
-            # Evitar división entre cero
             if anterior_si <= 0 or anterior_no <= 0:
                 continue
 
-            # =================================================
-            # CAMBIO DE PRECIO
-            # =================================================
-
-            cambio_si = (
-                precio_si - anterior_si
-            )
-
-            cambio_no = (
-                precio_no - anterior_no
-            )
-
-            # =================================================
-            # RADAR DEL MAYOR MOVIMIENTO
-            # =================================================
+            cambio_si = precio_si - anterior_si
+            cambio_no = precio_no - anterior_no
 
             movimiento_actual = max(
                 abs(cambio_si),
@@ -212,14 +115,21 @@ def analizar_mercados(mercados):
             )
 
             if movimiento_actual > mayor_movimiento:
+                mayor_movimiento = movimiento_actual
 
-                mayor_movimiento = (
-                    movimiento_actual
+            # Guardar candidatos para el radar TOP 10
+            if movimiento_actual > 0:
+                mayores_movimientos.append(
+                    {
+                        "pregunta": pregunta,
+                        "slug": slug,
+                        "movimiento": movimiento_actual,
+                        "cambio_si": cambio_si,
+                        "cambio_no": cambio_no,
+                        "precio_si": precio_si,
+                        "precio_no": precio_no
+                    }
                 )
-
-            # =================================================
-            # PORCENTAJES
-            # =================================================
 
             porcentaje_si = (
                 cambio_si / anterior_si
@@ -229,81 +139,56 @@ def analizar_mercados(mercados):
                 cambio_no / anterior_no
             ) * 100
 
-            # =================================================
-            # DETECTAR MOVIMIENTO
-            # =================================================
-
             if (
                 abs(cambio_si) >= UMBRAL_MOVIMIENTO
-                or
-                abs(cambio_no) >= UMBRAL_MOVIMIENTO
+                or abs(cambio_no) >= UMBRAL_MOVIMIENTO
             ):
 
                 movimiento = {
-
                     "fecha": datetime.now(
                         timezone.utc
                     ).isoformat(),
 
                     "pregunta": pregunta,
-
                     "slug": slug,
 
-                    "precio_si": precio_si,
+                    "precio_si_anterior": anterior_si,
+                    "precio_si_actual": precio_si,
 
-                    "precio_no": precio_no,
+                    "precio_no_anterior": anterior_no,
+                    "precio_no_actual": precio_no,
 
                     "cambio_si": cambio_si,
-
                     "cambio_no": cambio_no,
 
                     "porcentaje_si": porcentaje_si,
-
                     "porcentaje_no": porcentaje_no
                 }
 
-                movimientos.append(
-                    movimiento
-                )
+                movimientos.append(movimiento)
+                historial.append(movimiento)
 
-                historial.append(
-                    movimiento
-                )
-
-        except (
-            ValueError,
-            TypeError,
-            json.JSONDecodeError
-        ):
-
+        except (ValueError, TypeError, json.JSONDecodeError):
             continue
 
-    # ========================================================
-    # GUARDAR MEMORIA
-    # ========================================================
-
+    # Guardar precios actuales
     guardar_json(
         ARCHIVO_PRECIOS,
         actuales
     )
 
+    # Guardar historial
     guardar_json(
         ARCHIVO_HISTORIAL,
-        historial[-500:]
-    )
-
-    # ========================================================
-    # RESULTADOS DEL ANALIZADOR
-    # ========================================================
-
-    print(
-        f"📊 Mercados guardados: "
-        f"{len(actuales)}"
+        historial
     )
 
     print(
-        f"🔎 Movimientos detectados: "
-        f"{len(movimientos)}"
+        f"💾 Mercados guardados: {len(actuales)}"
+    )
+
+    print(
+        f"📊 Movimientos detectados: {len(movimientos)}"
     )
 
     print(
@@ -316,133 +201,94 @@ def analizar_mercados(mercados):
         f"{UMBRAL_MOVIMIENTO:.6f}"
     )
 
-    print()
+    # ==========================================
+    # RADAR TOP 10
+    # ==========================================
 
-    # ========================================================
-    # MOSTRAR MOVIMIENTOS
-    # ========================================================
+    mayores_movimientos.sort(
+        key=lambda x: x["movimiento"],
+        reverse=True
+    )
 
-    if movimientos:
+    print("")
+    print("🏆 TOP 10 MAYORES MOVIMIENTOS")
+    print("--------------------------------")
 
-        print("📋 MOVIMIENTOS ENCONTRADOS")
-        print("-" * 50)
-        print()
+    if not mayores_movimientos:
 
-        for movimiento in movimientos[:10]:
+        print("No hay movimientos medibles todavía.")
+
+    else:
+
+        for i, movimiento in enumerate(
+            mayores_movimientos[:10],
+            1
+        ):
 
             print(
-                f"📈 {movimiento['pregunta']}"
+                f"{i}. {movimiento['pregunta']}"
+            )
+
+            print(
+                f"   Movimiento: "
+                f"{movimiento['movimiento']:.6f}"
             )
 
             print(
                 f"   Sí: "
-                f"{movimiento['precio_si']:.4f} "
-                f"("
-                f"{movimiento['porcentaje_si']:+.2f}%"
-                f")"
+                f"{movimiento['cambio_si']:+.6f}"
+                f" | No: "
+                f"{movimiento['cambio_no']:+.6f}"
             )
 
             print(
-                f"   No: "
-                f"{movimiento['precio_no']:.4f} "
-                f"("
-                f"{movimiento['porcentaje_no']:+.2f}%"
-                f")"
+                f"   Precio Sí: "
+                f"{movimiento['precio_si']:.4f}"
+                f" | No: "
+                f"{movimiento['precio_no']:.4f}"
             )
 
-            print()
+            print("")
 
-    else:
-
-        print(
-            "ℹ️ No se detectaron movimientos "
-            "por encima del umbral."
-        )
-
-        print()
-
-    # ========================================================
+    # ==========================================
     # SIMULACIÓN
-    # ========================================================
+    # ==========================================
 
-    print("🧪 SIMULACIÓN")
-    print("=" * 50)
-
-    operaciones = simulacion.get(
-        "operaciones",
-        []
-    )
-
-    nuevas_operaciones = 0
+    operaciones_nuevas = []
 
     for movimiento in movimientos:
 
-        lado = None
-        precio = None
+        cambio_si = movimiento["cambio_si"]
+        cambio_no = movimiento["cambio_no"]
 
-        # Movimiento positivo de SI
-        if (
-            movimiento["cambio_si"]
-            > UMBRAL_MOVIMIENTO
-        ):
+        if cambio_si > 0:
 
-            lado = "SI"
-            precio = movimiento["precio_si"]
+            resultado = {
+                "fecha": movimiento["fecha"],
+                "pregunta": movimiento["pregunta"],
+                "lado": "SI",
+                "monto": MONTO_POR_OPERACION,
+                "cambio": cambio_si,
+                "tipo": "SIMULACION"
+            }
 
-        # Movimiento positivo de NO
-        elif (
-            movimiento["cambio_no"]
-            > UMBRAL_MOVIMIENTO
-        ):
+            operaciones_nuevas.append(resultado)
 
-            lado = "NO"
-            precio = movimiento["precio_no"]
+        elif cambio_no > 0:
 
-        if lado is None:
-            continue
+            resultado = {
+                "fecha": movimiento["fecha"],
+                "pregunta": movimiento["pregunta"],
+                "lado": "NO",
+                "monto": MONTO_POR_OPERACION,
+                "cambio": cambio_no,
+                "tipo": "SIMULACION"
+            }
 
-        operacion = {
+            operaciones_nuevas.append(resultado)
 
-            "fecha": movimiento["fecha"],
-
-            "pregunta": movimiento["pregunta"],
-
-            "slug": movimiento["slug"],
-
-            "lado": lado,
-
-            "precio_entrada": precio,
-
-            "monto_simulado": MONTO_POR_OPERACION,
-
-            "estado": "ABIERTA"
-        }
-
-        operaciones.append(
-            operacion
-        )
-
-        nuevas_operaciones += 1
-
-        print(
-            f"🧪 SIMULACIÓN: {lado}"
-        )
-
-        print(
-            f"   Precio de referencia: "
-            f"{precio:.4f}"
-        )
-
-        print(
-            f"   Monto simulado: "
-            f"${MONTO_POR_OPERACION:.2f}"
-        )
-
-        print()
-
-    # Mantener máximo 100 operaciones
-    simulacion["operaciones"] = (
-        operaciones[-100:]
+    simulacion["operaciones"].extend(
+        operaciones_nuevas
     )
 
     guardar_json(
@@ -450,30 +296,36 @@ def analizar_mercados(mercados):
         simulacion
     )
 
-    # ========================================================
-    # RESUMEN DE SIMULACIÓN
-    # ========================================================
+    print("")
+    print("💰 SIMULACIÓN")
+    print("--------------------------------")
 
     print(
-        f"💰 Capital inicial simulado: "
+        f"Capital inicial simulado: "
         f"${CAPITAL_SIMULADO:.2f}"
     )
 
     print(
-        f"🆕 Nuevas operaciones simuladas: "
-        f"{nuevas_operaciones}"
+        f"Nuevas operaciones simuladas: "
+        f"{len(operaciones_nuevas)}"
     )
 
     print(
-        f"📋 Operaciones simuladas registradas: "
+        f"Operaciones simuladas registradas: "
         f"{len(simulacion['operaciones'])}"
     )
 
 
-# ============================================================
-# INICIO DEL PROGRAMA
-# ============================================================
-
 if __name__ == "__main__":
 
-    obtener_mercados()
+    print("🤖 PolymarketBot iniciando...")
+    print("📡 Consultando mercados activos...")
+
+    try:
+        obtener_mercados()
+
+    except Exception as e:
+
+        print(
+            f"❌ Error: {e}"
+        )
