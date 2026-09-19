@@ -1,7 +1,7 @@
 {
   "estado": "ACTIVO",
   "modo": "SIMULACION",
-  "ultima_ejecucion": "2026-09-19T23:05:21.078135+00:00",
+  "ultima_ejecucion": "2026-09-19T23:10:22.180454+00:00",
   "capital": 100.0,
   "operaciones": 3,
   "nuevas_operaciones": 0,
@@ -9,30 +9,30 @@
   "mercados_guardados": 50,
   "mercados_comparados": 50,
   "movimientos_detectados": 0,
-  "mayor_movimiento": 0.0010000000000000009,
+  "mayor_movimiento": 0.0,
   "umbral": 0.002,
   "top_movimientos": [
     {
       "pregunta": "Xi Jinping out before 2027?",
       "slug": "xi-jinping-out-before-2027",
-      "movimiento": 0.0010000000000000009,
-      "cambio_si": 0.0010000000000000009,
-      "cambio_no": -0.0010000000000000009,
+      "movimiento": 0.0,
+      "cambio_si": 0.0,
+      "cambio_no": 0.0,
       "precio_si": 0.037,
       "precio_no": 0.963,
-      "porcentaje_si": 2.7777777777777803,
-      "porcentaje_no": -0.10373443983402499
+      "porcentaje_si": 0.0,
+      "porcentaje_no": 0.0
     },
     {
       "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
       "slug": "will-gavin-newsom-win-the-2028-democratic-presidential-nomination-568",
-      "movimiento": 0.0005000000000000004,
-      "cambio_si": -0.0005000000000000004,
-      "cambio_no": 0.0004999999999999449,
+      "movimiento": 0.0,
+      "cambio_si": 0.0,
+      "cambio_no": 0.0,
       "precio_si": 0.156,
       "precio_no": 0.844,
-      "porcentaje_si": -0.31948881789137407,
-      "porcentaje_no": 0.05927682276229341
+      "porcentaje_si": 0.0,
+      "porcentaje_no": 0.0
     },
     {
       "pregunta": "Will Alexandria Ocasio-Cortez win the 2028 Democratic presidential nomination?",
