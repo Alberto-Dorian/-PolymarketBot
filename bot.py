@@ -30,6 +30,7 @@ def guardar_json(archivo, datos):
 
 
 def obtener_mercados():
+
     request = urllib.request.Request(
         API_URL,
         headers={
@@ -47,8 +48,16 @@ def obtener_mercados():
 
 
 def analizar_mercados(mercados):
-    anteriores = cargar_json(ARCHIVO_PRECIOS, {})
-    historial = cargar_json(ARCHIVO_HISTORIAL, [])
+
+    anteriores = cargar_json(
+        ARCHIVO_PRECIOS,
+        {}
+    )
+
+    historial = cargar_json(
+        ARCHIVO_HISTORIAL,
+        []
+    )
 
     simulacion = cargar_json(
         ARCHIVO_SIMULACION,
@@ -62,18 +71,30 @@ def analizar_mercados(mercados):
     movimientos = []
     mayores_movimientos = []
 
+    mercados_comparados = 0
     mayor_movimiento = 0.0
 
     for market in mercados:
 
-        pregunta = market.get("question", "Sin nombre")
-        slug = market.get("slug", "")
-        precios = market.get("outcomePrices")
+        pregunta = market.get(
+            "question",
+            "Sin nombre"
+        )
+
+        slug = market.get(
+            "slug",
+            ""
+        )
+
+        precios = market.get(
+            "outcomePrices"
+        )
 
         if not slug or not precios:
             continue
 
         try:
+
             if isinstance(precios, str):
                 precios = json.loads(precios)
 
@@ -92,19 +113,32 @@ def analizar_mercados(mercados):
                 "no": precio_no
             }
 
+            # Primer registro del mercado
             if slug not in anteriores:
                 continue
 
             anterior_si = float(
-                anteriores[slug].get("si", 0)
+                anteriores[slug].get(
+                    "si",
+                    0
+                )
             )
 
             anterior_no = float(
-                anteriores[slug].get("no", 0)
+                anteriores[slug].get(
+                    "no",
+                    0
+                )
             )
 
             if anterior_si <= 0 or anterior_no <= 0:
                 continue
+
+            # ==========================================
+            # COMPARACIÓN
+            # ==========================================
+
+            mercados_comparados += 1
 
             cambio_si = precio_si - anterior_si
             cambio_no = precio_no - anterior_no
@@ -117,20 +151,6 @@ def analizar_mercados(mercados):
             if movimiento_actual > mayor_movimiento:
                 mayor_movimiento = movimiento_actual
 
-            # Guardar candidatos para el radar TOP 10
-            if movimiento_actual > 0:
-                mayores_movimientos.append(
-                    {
-                        "pregunta": pregunta,
-                        "slug": slug,
-                        "movimiento": movimiento_actual,
-                        "cambio_si": cambio_si,
-                        "cambio_no": cambio_no,
-                        "precio_si": precio_si,
-                        "precio_no": precio_no
-                    }
-                )
-
             porcentaje_si = (
                 cambio_si / anterior_si
             ) * 100
@@ -138,6 +158,27 @@ def analizar_mercados(mercados):
             porcentaje_no = (
                 cambio_no / anterior_no
             ) * 100
+
+            # ==========================================
+            # GUARDAR TODOS LOS MERCADOS
+            # INCLUSO SI EL MOVIMIENTO ES 0
+            # ==========================================
+
+            mayores_movimientos.append(
+                {
+                    "pregunta": pregunta,
+                    "slug": slug,
+                    "movimiento": movimiento_actual,
+                    "cambio_si": cambio_si,
+                    "cambio_no": cambio_no,
+                    "precio_si": precio_si,
+                    "precio_no": precio_no
+                }
+            )
+
+            # ==========================================
+            # FILTRO DEL BOT
+            # ==========================================
 
             if (
                 abs(cambio_si) >= UMBRAL_MOVIMIENTO
@@ -165,30 +206,52 @@ def analizar_mercados(mercados):
                     "porcentaje_no": porcentaje_no
                 }
 
-                movimientos.append(movimiento)
-                historial.append(movimiento)
+                movimientos.append(
+                    movimiento
+                )
 
-        except (ValueError, TypeError, json.JSONDecodeError):
+                historial.append(
+                    movimiento
+                )
+
+        except (
+            ValueError,
+            TypeError,
+            json.JSONDecodeError
+        ):
             continue
 
-    # Guardar precios actuales
+    # ==========================================
+    # GUARDAR MEMORIA
+    # ==========================================
+
     guardar_json(
         ARCHIVO_PRECIOS,
         actuales
     )
 
-    # Guardar historial
     guardar_json(
         ARCHIVO_HISTORIAL,
         historial
     )
 
+    # ==========================================
+    # RESUMEN
+    # ==========================================
+
     print(
-        f"💾 Mercados guardados: {len(actuales)}"
+        f"💾 Mercados guardados: "
+        f"{len(actuales)}"
     )
 
     print(
-        f"📊 Movimientos detectados: {len(movimientos)}"
+        f"🔍 Mercados comparados: "
+        f"{mercados_comparados}"
+    )
+
+    print(
+        f"📊 Movimientos detectados: "
+        f"{len(movimientos)}"
     )
 
     print(
@@ -202,7 +265,7 @@ def analizar_mercados(mercados):
     )
 
     # ==========================================
-    # RADAR TOP 10
+    # TOP 10
     # ==========================================
 
     mayores_movimientos.sort(
@@ -216,7 +279,9 @@ def analizar_mercados(mercados):
 
     if not mayores_movimientos:
 
-        print("No hay movimientos medibles todavía.")
+        print(
+            "⚠️ No hay mercados comparables todavía."
+        )
 
     else:
 
@@ -272,7 +337,9 @@ def analizar_mercados(mercados):
                 "tipo": "SIMULACION"
             }
 
-            operaciones_nuevas.append(resultado)
+            operaciones_nuevas.append(
+                resultado
+            )
 
         elif cambio_no > 0:
 
@@ -285,7 +352,9 @@ def analizar_mercados(mercados):
                 "tipo": "SIMULACION"
             }
 
-            operaciones_nuevas.append(resultado)
+            operaciones_nuevas.append(
+                resultado
+            )
 
     simulacion["operaciones"].extend(
         operaciones_nuevas
@@ -322,6 +391,7 @@ if __name__ == "__main__":
     print("📡 Consultando mercados activos...")
 
     try:
+
         obtener_mercados()
 
     except Exception as e:
