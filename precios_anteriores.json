@@ -1,0 +1,252 @@
+{
+  "xi-jinping-out-before-2027": {
+    "pregunta": "Xi Jinping out before 2027?",
+    "si": 0.0385,
+    "no": 0.9615
+  },
+  "will-gavin-newsom-win-the-2028-democratic-presidential-nomination-568": {
+    "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
+    "si": 0.1595,
+    "no": 0.8405
+  },
+  "will-alexandria-ocasio-cortez-win-the-2028-democratic-presidential-nomination-653": {
+    "pregunta": "Will Alexandria Ocasio-Cortez win the 2028 Democratic presidential nomination?",
+    "si": 0.1855,
+    "no": 0.8145
+  },
+  "will-pete-buttigieg-win-the-2028-democratic-presidential-nomination-687": {
+    "pregunta": "Will Pete Buttigieg win the 2028 Democratic presidential nomination?",
+    "si": 0.0545,
+    "no": 0.9455
+  },
+  "will-josh-shapiro-win-the-2028-democratic-presidential-nomination-977": {
+    "pregunta": "Will Josh Shapiro win the 2028 Democratic presidential nomination?",
+    "si": 0.062,
+    "no": 0.938
+  },
+  "will-wes-moore-win-the-2028-democratic-presidential-nomination-714": {
+    "pregunta": "Will Wes Moore win the 2028 Democratic presidential nomination?",
+    "si": 0.0175,
+    "no": 0.9825
+  },
+  "will-stephen-a-smith-win-the-2028-democratic-presidential-nomination-914": {
+    "pregunta": "Will Stephen A. Smith win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-kamala-harris-win-the-2028-democratic-presidential-nomination-641": {
+    "pregunta": "Will Kamala Harris win the 2028 Democratic presidential nomination?",
+    "si": 0.0965,
+    "no": 0.9035
+  },
+  "will-gretchen-whitmer-win-the-2028-democratic-presidential-nomination-676": {
+    "pregunta": "Will Gretchen Whitmer win the 2028 Democratic presidential nomination?",
+    "si": 0.0045,
+    "no": 0.9955
+  },
+  "will-andy-beshear-win-the-2028-democratic-presidential-nomination-832": {
+    "pregunta": "Will Andy Beshear win the 2028 Democratic presidential nomination?",
+    "si": 0.0245,
+    "no": 0.9755
+  },
+  "will-jon-ossoff-win-the-2028-democratic-presidential-nomination-885": {
+    "pregunta": "Will Jon Ossoff win the 2028 Democratic presidential nomination?",
+    "si": 0.1645,
+    "no": 0.8355
+  },
+  "will-mark-cuban-win-the-2028-democratic-presidential-nomination-329": {
+    "pregunta": "Will Mark Cuban win the 2028 Democratic presidential nomination?",
+    "si": 0.0035,
+    "no": 0.9965
+  },
+  "will-jb-pritzker-win-the-2028-democratic-presidential-nomination-288": {
+    "pregunta": "Will J.B. Pritzker win the 2028 Democratic presidential nomination?",
+    "si": 0.0125,
+    "no": 0.9875
+  },
+  "will-raphael-warnock-win-the-2028-democratic-presidential-nomination-914": {
+    "pregunta": "Will Raphael Warnock win the 2028 Democratic presidential nomination?",
+    "si": 0.0055,
+    "no": 0.9945
+  },
+  "will-corey-booker-win-the-2028-democratic-presidential-nomination-125": {
+    "pregunta": "Will Cory Booker win the 2028 Democratic presidential nomination?",
+    "si": 0.0055,
+    "no": 0.9945
+  },
+  "will-tim-walz-win-the-2028-democratic-presidential-nomination-475": {
+    "pregunta": "Will Tim Walz win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-michelle-obama-win-the-2028-democratic-presidential-nomination-777": {
+    "pregunta": "Will Michelle Obama win the 2028 Democratic presidential nomination?",
+    "si": 0.0025,
+    "no": 0.9975
+  },
+  "will-mark-kelly-win-the-2028-democratic-presidential-nomination-479": {
+    "pregunta": "Will Mark Kelly win the 2028 Democratic presidential nomination?",
+    "si": 0.03,
+    "no": 0.97
+  },
+  "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299": {
+    "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
+    "si": 0.0225,
+    "no": 0.9775
+  },
+  "will-gina-raimondo-win-the-2028-democratic-presidential-nomination-676": {
+    "pregunta": "Will Gina Raimondo win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-zohran-mamdani-win-the-2028-democratic-presidential-nomination-445": {
+    "pregunta": "Will Zohran Mamdani win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-roy-cooper-win-the-2028-democratic-presidential-nomination-286": {
+    "pregunta": "Will Roy Cooper win the 2028 Democratic presidential nomination?",
+    "si": 0.001,
+    "no": 0.999
+  },
+  "will-john-fetterman-win-the-2028-democratic-presidential-nomination-941": {
+    "pregunta": "Will John Fetterman win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-jared-polis-win-the-2028-democratic-presidential-nomination-837": {
+    "pregunta": "Will Jared Polis win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-jon-stewart-win-the-2028-democratic-presidential-nomination-518": {
+    "pregunta": "Will Jon Stewart win the 2028 Democratic presidential nomination?",
+    "si": 0.0035,
+    "no": 0.9965
+  },
+  "will-barack-obama-win-the-2028-democratic-presidential-nomination-265": {
+    "pregunta": "Will Barack Obama win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-hillary-clinton-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Hillary Clinton win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-liz-cheney-win-the-2028-democratic-presidential-nomination-551": {
+    "pregunta": "Will Liz Cheney win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-bernie-sanders-win-the-2028-democratic-presidential-nomination-879": {
+    "pregunta": "Will Bernie Sanders win the 2028 Democratic presidential nomination?",
+    "si": 0.0045,
+    "no": 0.9955
+  },
+  "will-phil-murphy-win-the-2028-democratic-presidential-nomination-611": {
+    "pregunta": "Will Phil Murphy win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-lebron-james-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will LeBron James win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-person-a-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Hunter Biden win the 2028 Democratic presidential nomination?",
+    "si": 0.005,
+    "no": 0.995
+  },
+  "will-george-clooney-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will George Clooney win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-chelsea-clinton-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Chelsea Clinton win the 2028 Democratic presidential nomination?",
+    "si": 0.007,
+    "no": 0.993
+  },
+  "will-mrbeast-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will MrBeast win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-dwayne-the-rock-johnson-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Dwayne 'The Rock' Johnson win the 2028 Democratic presidential nomination?",
+    "si": 0.0115,
+    "no": 0.9885
+  },
+  "will-oprah-winfrey-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Oprah Winfrey win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-andrew-yang-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Andrew Yang win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-beto-orourke-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Beto O’Rourke win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-kim-kardashian-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Kim Kardashian win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-chris-murphy-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Chris Murphy win the 2028 Democratic presidential nomination?",
+    "si": 0.0045,
+    "no": 0.9955
+  },
+  "will-jasmine-crockett-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Jasmine Crockett win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-ruben-gallego-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Ruben Gallego win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-ro-khanna-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Ro Khanna win the 2028 Democratic presidential nomination?",
+    "si": 0.0145,
+    "no": 0.9855
+  },
+  "will-james-talarico-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will James Talarico win the 2028 Democratic presidential nomination?",
+    "si": 0.0235,
+    "no": 0.9765
+  },
+  "will-graham-platner-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Graham Platner win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-abigail-spanberger-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Abigail Spanberger win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-hakeem-jeffries-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Hakeem Jeffries win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  },
+  "will-elissa-slotkin-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Elissa Slotkin win the 2028 Democratic presidential nomination?",
+    "si": 0.0015,
+    "no": 0.9985
+  },
+  "will-adam-schiff-win-the-2028-democratic-presidential-nomination": {
+    "pregunta": "Will Adam Schiff win the 2028 Democratic presidential nomination?",
+    "si": 0.0005,
+    "no": 0.9995
+  }
+}
