@@ -1,1 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Polymarket Bot</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #080b12;
+    color: white;
+}
+
+header {
+    padding: 25px 20px;
+    background: #0d111c;
+    border-bottom: 1px solid #202738;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+header p {
+    margin: 7px 0 0;
+    color: #8d98aa;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.status {
+    background: #101827;
+    padding: 18px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #202a3b;
+}
+
+.online {
+    color: #43e27b;
+    font-weight: bold;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.card {
+    background: #101827;
+    border: 1px solid #202a3b;
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.card small {
+    color: #8d98aa;
+}
+
+.card strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 25px;
+}
+
+.section {
+    margin-top: 25px;
+}
+
+.section h2 {
+    font-size: 19px;
+}
+
+.market {
+    background: #101827;
+    border: 1px solid #202a3b;
+    border-radius: 14px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.market-title {
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.values {
+    margin-top: 8px;
+    color: #9eabc0;
+    font-size: 14px;
+}
+
+.refresh {
+    margin-top: 20px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: #657087;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🤖 Polymarket Bot</h1>
+    <p>Panel de análisis y simulación</p>
+</header>
+
+<div class="container">
+
+    <div class="status">
+        Estado del sistema:
+        <span class="online">● ACTIVO</span>
+        <br>
+        <small>Modo simulación</small>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <small>💰 Capital simulado</small>
+            <strong id="capital">$100.00</strong>
+        </div>
+
+        <div class="card">
+            <small>📊 Operaciones</small>
+            <strong id="operaciones">0</strong>
+        </div>
+
+        <div class="card">
+            <small>🎯 Umbral</small>
+            <strong id="umbral">0.002</strong>
+        </div>
+
+        <div class="card">
+            <small>📡 Mercados</small>
+            <strong id="mercados">50</strong>
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h2>🏆 Radar de mercados</h2>
+
+        <div id="radar">
+            Cargando datos...
+        </div>
+    </div>
+
+    <button class="refresh" onclick="cargarDatos()">
+        🔄 Actualizar
+    </button>
+
+</div>
+
+<div class="footer">
+    Polymarket Bot • Simulación
+</div>
+
+<script>
+
+async function cargarDatos() {
+
+    try {
+
+        const respuesta =
+            await fetch("precios_anteriores.json?nocache=" + Date.now());
+
+        const mercados =
+            await respuesta.json();
+
+        const lista =
+            Object.values(mercados);
+
+        document.getElementById("mercados").innerText =
+            lista.length;
+
+        const radar =
+            document.getElementById("radar");
+
+        radar.innerHTML = "";
+
+        lista.slice(0, 10).forEach((mercado, index) => {
+
+            const div =
+                document.createElement("div");
+
+            div.className = "market";
+
+            div.innerHTML = `
+                <div class="market-title">
+                    ${index + 1}. ${mercado.pregunta}
+                </div>
+
+                <div class="values">
+                    Sí: ${Number(mercado.si).toFixed(4)}
+                    &nbsp; | &nbsp;
+                    No: ${Number(mercado.no).toFixed(4)}
+                </div>
+            `;
+
+            radar.appendChild(div);
+
+        });
+
+    } catch (error) {
+
+        document.getElementById("radar").innerHTML =
+            "⚠️ No se pudieron cargar los datos.";
+
+    }
+
+}
+
+cargarDatos();
+
+</script>
+
+</body>
+</html>
