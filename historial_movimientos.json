@@ -24,5 +24,18 @@
     "cambio_no": 0.0020000000000000018,
     "porcentaje_si": -5.194805194805199,
     "porcentaje_no": 0.2080083203328135
+  },
+  {
+    "fecha": "2026-09-19T21:23:51.532995+00:00",
+    "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
+    "slug": "will-gavin-newsom-win-the-2028-democratic-presidential-nomination-568",
+    "precio_si_anterior": 0.1595,
+    "precio_si_actual": 0.1565,
+    "precio_no_anterior": 0.8405,
+    "precio_no_actual": 0.8435,
+    "cambio_si": -0.0030000000000000027,
+    "cambio_no": 0.0030000000000000027,
+    "porcentaje_si": -1.8808777429467098,
+    "porcentaje_no": 0.3569303985722787
   }
 ]

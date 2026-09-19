@@ -16,6 +16,14 @@
       "monto": 10.0,
       "cambio": 0.0020000000000000018,
       "tipo": "SIMULACION"
+    },
+    {
+      "fecha": "2026-09-19T21:23:51.532995+00:00",
+      "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
+      "lado": "NO",
+      "monto": 10.0,
+      "cambio": 0.0030000000000000027,
+      "tipo": "SIMULACION"
     }
   ]
 }
