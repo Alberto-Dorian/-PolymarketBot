@@ -10,6 +10,11 @@ API_URL = (
 
 ARCHIVO_PRECIOS = "precios_anteriores.json"
 ARCHIVO_HISTORIAL = "historial_movimientos.json"
+ARCHIVO_SIMULACION = "simulacion.json"
+
+UMBRAL_MOVIMIENTO = 0.005
+CAPITAL_SIMULADO = 100.0
+MONTO_POR_OPERACION = 10.0
 
 
 def cargar_json(archivo, valor_por_defecto):
@@ -57,6 +62,14 @@ def obtener_mercados():
 def analizar_mercados(mercados):
     anteriores = cargar_json(ARCHIVO_PRECIOS, {})
     historial = cargar_json(ARCHIVO_HISTORIAL, [])
+    simulacion = cargar_json(
+        ARCHIVO_SIMULACION,
+        {
+            "capital": CAPITAL_SIMULADO,
+            "operaciones": []
+        }
+    )
+
     actuales = {}
     movimientos = []
 
@@ -106,7 +119,10 @@ def analizar_mercados(mercados):
             porcentaje_si = (cambio_si / anterior_si) * 100
             porcentaje_no = (cambio_no / anterior_no) * 100
 
-            if abs(cambio_si) >= 0.005 or abs(cambio_no) >= 0.005:
+            if (
+                abs(cambio_si) >= UMBRAL_MOVIMIENTO
+                or abs(cambio_no) >= UMBRAL_MOVIMIENTO
+            ):
                 movimiento = {
                     "fecha": datetime.now(timezone.utc).isoformat(),
                     "pregunta": pregunta,
@@ -132,14 +148,59 @@ def analizar_mercados(mercados):
     print(f"🔎 Movimientos detectados: {len(movimientos)}")
     print()
 
-    for i, movimiento in enumerate(movimientos[:10], start=1):
-        print(f"{i}. {movimiento['pregunta']}")
-        print(f"   Sí: {movimiento['precio_si']:.4f}")
-        print(f"   Cambio: {movimiento['cambio_si']:+.4f}")
-        print(f"   Cambio %: {movimiento['porcentaje_si']:+.2f}%")
-        print(f"   No: {movimiento['precio_no']:.4f}")
-        print(f"   Cambio % No: {movimiento['porcentaje_no']:+.2f}%")
+    for movimiento in movimientos[:10]:
+        print(f"📈 {movimiento['pregunta']}")
+        print(
+            f"   Sí: {movimiento['precio_si']:.4f} "
+            f"({movimiento['porcentaje_si']:+.2f}%)"
+        )
+        print(
+            f"   No: {movimiento['precio_no']:.4f} "
+            f"({movimiento['porcentaje_no']:+.2f}%)"
+        )
         print()
+
+    print("🧪 SIMULACIÓN")
+    print("=" * 50)
+
+    operaciones = simulacion.get("operaciones", [])
+
+    for movimiento in movimientos:
+        if movimiento["cambio_si"] > UMBRAL_MOVIMIENTO:
+            lado = "SI"
+            precio = movimiento["precio_si"]
+        elif movimiento["cambio_no"] > UMBRAL_MOVIMIENTO:
+            lado = "NO"
+            precio = movimiento["precio_no"]
+        else:
+            continue
+
+        operaciones.append({
+            "fecha": movimiento["fecha"],
+            "pregunta": movimiento["pregunta"],
+            "slug": movimiento["slug"],
+            "lado": lado,
+            "precio_entrada": precio,
+            "monto_simulado": MONTO_POR_OPERACION,
+            "estado": "ABIERTA"
+        })
+
+        print(f"🧪 SIMULACIÓN: {lado}")
+        print(f"   Precio de referencia: {precio:.4f}")
+        print(f"   Capital simulado: ${MONTO_POR_OPERACION:.2f}")
+        print()
+
+    simulacion["operaciones"] = operaciones[-100:]
+    guardar_json(ARCHIVO_SIMULACION, simulacion)
+
+    print(
+        f"💰 Capital inicial simulado: "
+        f"${CAPITAL_SIMULADO:.2f}"
+    )
+    print(
+        f"📋 Operaciones simuladas registradas: "
+        f"{len(simulacion['operaciones'])}"
+    )
 
 
 if __name__ == "__main__":
