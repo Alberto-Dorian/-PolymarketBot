@@ -10,6 +10,7 @@ API_URL = (
 ARCHIVO_PRECIOS = "precios_anteriores.json"
 ARCHIVO_HISTORIAL = "historial_movimientos.json"
 ARCHIVO_SIMULACION = "simulacion.json"
+ARCHIVO_DASHBOARD = "dashboard.json"
 
 UMBRAL_MOVIMIENTO = 0.002
 CAPITAL_SIMULADO = 100.0
@@ -40,7 +41,9 @@ def obtener_mercados():
     )
 
     with urllib.request.urlopen(request, timeout=30) as response:
-        data = json.loads(response.read().decode("utf-8"))
+        data = json.loads(
+            response.read().decode("utf-8")
+        )
 
     print(f"✅ Mercados recibidos: {len(data)}")
 
@@ -48,6 +51,8 @@ def obtener_mercados():
 
 
 def analizar_mercados(mercados):
+
+    ahora = datetime.now(timezone.utc).isoformat()
 
     anteriores = cargar_json(
         ARCHIVO_PRECIOS,
@@ -113,30 +118,19 @@ def analizar_mercados(mercados):
                 "no": precio_no
             }
 
-            # Primer registro del mercado
             if slug not in anteriores:
                 continue
 
             anterior_si = float(
-                anteriores[slug].get(
-                    "si",
-                    0
-                )
+                anteriores[slug].get("si", 0)
             )
 
             anterior_no = float(
-                anteriores[slug].get(
-                    "no",
-                    0
-                )
+                anteriores[slug].get("no", 0)
             )
 
             if anterior_si <= 0 or anterior_no <= 0:
                 continue
-
-            # ==========================================
-            # COMPARACIÓN
-            # ==========================================
 
             mercados_comparados += 1
 
@@ -159,11 +153,6 @@ def analizar_mercados(mercados):
                 cambio_no / anterior_no
             ) * 100
 
-            # ==========================================
-            # GUARDAR TODOS LOS MERCADOS
-            # INCLUSO SI EL MOVIMIENTO ES 0
-            # ==========================================
-
             mayores_movimientos.append(
                 {
                     "pregunta": pregunta,
@@ -172,13 +161,11 @@ def analizar_mercados(mercados):
                     "cambio_si": cambio_si,
                     "cambio_no": cambio_no,
                     "precio_si": precio_si,
-                    "precio_no": precio_no
+                    "precio_no": precio_no,
+                    "porcentaje_si": porcentaje_si,
+                    "porcentaje_no": porcentaje_no
                 }
             )
-
-            # ==========================================
-            # FILTRO DEL BOT
-            # ==========================================
 
             if (
                 abs(cambio_si) >= UMBRAL_MOVIMIENTO
@@ -186,33 +173,21 @@ def analizar_mercados(mercados):
             ):
 
                 movimiento = {
-                    "fecha": datetime.now(
-                        timezone.utc
-                    ).isoformat(),
-
+                    "fecha": ahora,
                     "pregunta": pregunta,
                     "slug": slug,
-
                     "precio_si_anterior": anterior_si,
                     "precio_si_actual": precio_si,
-
                     "precio_no_anterior": anterior_no,
                     "precio_no_actual": precio_no,
-
                     "cambio_si": cambio_si,
                     "cambio_no": cambio_no,
-
                     "porcentaje_si": porcentaje_si,
                     "porcentaje_no": porcentaje_no
                 }
 
-                movimientos.append(
-                    movimiento
-                )
-
-                historial.append(
-                    movimiento
-                )
+                movimientos.append(movimiento)
+                historial.append(movimiento)
 
         except (
             ValueError,
@@ -221,9 +196,12 @@ def analizar_mercados(mercados):
         ):
             continue
 
-    # ==========================================
-    # GUARDAR MEMORIA
-    # ==========================================
+    mayores_movimientos.sort(
+        key=lambda x: x["movimiento"],
+        reverse=True
+    )
+
+    top_10 = mayores_movimientos[:10]
 
     guardar_json(
         ARCHIVO_PRECIOS,
@@ -236,8 +214,93 @@ def analizar_mercados(mercados):
     )
 
     # ==========================================
-    # RESUMEN
+    # SIMULACIÓN
     # ==========================================
+
+    operaciones_nuevas = []
+
+    for movimiento in movimientos:
+
+        cambio_si = movimiento["cambio_si"]
+        cambio_no = movimiento["cambio_no"]
+
+        if cambio_si > 0:
+
+            operaciones_nuevas.append(
+                {
+                    "fecha": movimiento["fecha"],
+                    "pregunta": movimiento["pregunta"],
+                    "lado": "SI",
+                    "monto": MONTO_POR_OPERACION,
+                    "cambio": cambio_si,
+                    "tipo": "SIMULACION"
+                }
+            )
+
+        elif cambio_no > 0:
+
+            operaciones_nuevas.append(
+                {
+                    "fecha": movimiento["fecha"],
+                    "pregunta": movimiento["pregunta"],
+                    "lado": "NO",
+                    "monto": MONTO_POR_OPERACION,
+                    "cambio": cambio_no,
+                    "tipo": "SIMULACION"
+                }
+            )
+
+    simulacion["operaciones"].extend(
+        operaciones_nuevas
+    )
+
+    guardar_json(
+        ARCHIVO_SIMULACION,
+        simulacion
+    )
+
+    # ==========================================
+    # DASHBOARD
+    # ==========================================
+
+    dashboard = {
+        "estado": "ACTIVO",
+        "modo": "SIMULACION",
+        "ultima_ejecucion": ahora,
+        "capital": float(
+            simulacion.get(
+                "capital",
+                CAPITAL_SIMULADO
+            )
+        ),
+        "operaciones": len(
+            simulacion["operaciones"]
+        ),
+        "nuevas_operaciones": len(
+            operaciones_nuevas
+        ),
+        "mercados_recibidos": len(mercados),
+        "mercados_guardados": len(actuales),
+        "mercados_comparados": mercados_comparados,
+        "movimientos_detectados": len(movimientos),
+        "mayor_movimiento": mayor_movimiento,
+        "umbral": UMBRAL_MOVIMIENTO,
+        "top_movimientos": top_10
+    }
+
+    guardar_json(
+        ARCHIVO_DASHBOARD,
+        dashboard
+    )
+
+    # ==========================================
+    # CONSOLA
+    # ==========================================
+
+    print("")
+    print("================================")
+    print("🤖 POLYMARKET BOT")
+    print("================================")
 
     print(
         f"💾 Mercados guardados: "
@@ -255,134 +318,61 @@ def analizar_mercados(mercados):
     )
 
     print(
-        f"📈 Mayor movimiento detectado: "
+        f"📈 Mayor movimiento: "
         f"{mayor_movimiento:.6f}"
     )
 
     print(
-        f"🎯 Umbral actual: "
+        f"🎯 Umbral: "
         f"{UMBRAL_MOVIMIENTO:.6f}"
-    )
-
-    # ==========================================
-    # TOP 10
-    # ==========================================
-
-    mayores_movimientos.sort(
-        key=lambda x: x["movimiento"],
-        reverse=True
     )
 
     print("")
     print("🏆 TOP 10 MAYORES MOVIMIENTOS")
     print("--------------------------------")
 
-    if not mayores_movimientos:
+    for i, movimiento in enumerate(
+        top_10,
+        1
+    ):
 
         print(
-            "⚠️ No hay mercados comparables todavía."
+            f"{i}. {movimiento['pregunta']}"
         )
 
-    else:
+        print(
+            f"   Movimiento: "
+            f"{movimiento['movimiento']:.6f}"
+        )
 
-        for i, movimiento in enumerate(
-            mayores_movimientos[:10],
-            1
-        ):
-
-            print(
-                f"{i}. {movimiento['pregunta']}"
-            )
-
-            print(
-                f"   Movimiento: "
-                f"{movimiento['movimiento']:.6f}"
-            )
-
-            print(
-                f"   Sí: "
-                f"{movimiento['cambio_si']:+.6f}"
-                f" | No: "
-                f"{movimiento['cambio_no']:+.6f}"
-            )
-
-            print(
-                f"   Precio Sí: "
-                f"{movimiento['precio_si']:.4f}"
-                f" | No: "
-                f"{movimiento['precio_no']:.4f}"
-            )
-
-            print("")
-
-    # ==========================================
-    # SIMULACIÓN
-    # ==========================================
-
-    operaciones_nuevas = []
-
-    for movimiento in movimientos:
-
-        cambio_si = movimiento["cambio_si"]
-        cambio_no = movimiento["cambio_no"]
-
-        if cambio_si > 0:
-
-            resultado = {
-                "fecha": movimiento["fecha"],
-                "pregunta": movimiento["pregunta"],
-                "lado": "SI",
-                "monto": MONTO_POR_OPERACION,
-                "cambio": cambio_si,
-                "tipo": "SIMULACION"
-            }
-
-            operaciones_nuevas.append(
-                resultado
-            )
-
-        elif cambio_no > 0:
-
-            resultado = {
-                "fecha": movimiento["fecha"],
-                "pregunta": movimiento["pregunta"],
-                "lado": "NO",
-                "monto": MONTO_POR_OPERACION,
-                "cambio": cambio_no,
-                "tipo": "SIMULACION"
-            }
-
-            operaciones_nuevas.append(
-                resultado
-            )
-
-    simulacion["operaciones"].extend(
-        operaciones_nuevas
-    )
-
-    guardar_json(
-        ARCHIVO_SIMULACION,
-        simulacion
-    )
+        print(
+            f"   Sí: "
+            f"{movimiento['cambio_si']:+.6f}"
+            f" | No: "
+            f"{movimiento['cambio_no']:+.6f}"
+        )
 
     print("")
     print("💰 SIMULACIÓN")
     print("--------------------------------")
 
     print(
-        f"Capital inicial simulado: "
-        f"${CAPITAL_SIMULADO:.2f}"
+        f"Capital: "
+        f"${simulacion['capital']:.2f}"
     )
 
     print(
-        f"Nuevas operaciones simuladas: "
+        f"Nuevas operaciones: "
         f"{len(operaciones_nuevas)}"
     )
 
     print(
-        f"Operaciones simuladas registradas: "
+        f"Operaciones registradas: "
         f"{len(simulacion['operaciones'])}"
     )
+
+    print("")
+    print("🌐 dashboard.json actualizado")
 
 
 if __name__ == "__main__":
@@ -399,3 +389,4 @@ if __name__ == "__main__":
         print(
             f"❌ Error: {e}"
         )
+        raise
