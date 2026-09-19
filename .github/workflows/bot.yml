@@ -2,6 +2,7 @@ name: Polymarket Bot
 
 on:
   workflow_dispatch:
+
   schedule:
     - cron: "*/15 * * * *"
 
@@ -10,9 +11,11 @@ permissions:
 
 jobs:
   run-bot:
+
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Descargar código
         uses: actions/checkout@v4
 
@@ -22,12 +25,20 @@ jobs:
           python-version: "3.12"
 
       - name: Ejecutar bot
-        run: python bot.py
-
-      - name: Guardar memoria, historial y simulación
         run: |
+          python bot.py
+
+      - name: Guardar memoria, historial, simulación y dashboard
+        run: |
+
           git config user.name "PolymarketBot"
-          git config user.email "polymarketbot@users.noreply.github.com"
-          git add precios_anteriores.json historial_movimientos.json simulacion.json
-          git diff --cached --quiet || git commit -m "Actualizar memoria e historial de simulacion"
+          git config user.email "bot@polymarket.local"
+
+          git add precios_anteriores.json
+          git add historial_movimientos.json
+          git add simulacion.json
+          git add dashboard.json
+
+          git diff --cached --quiet || git commit -m "Actualizar datos del bot"
+
           git push
