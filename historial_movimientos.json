@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "fecha": "2026-09-19T08:59:42.356466+00:00",
+    "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
+    "slug": "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299",
+    "precio_si_anterior": 0.0225,
+    "precio_si_actual": 0.02,
+    "precio_no_anterior": 0.9775,
+    "precio_no_actual": 0.98,
+    "cambio_si": -0.0024999999999999988,
+    "cambio_no": 0.0024999999999999467,
+    "porcentaje_si": -11.111111111111107,
+    "porcentaje_no": 0.2557544757033194
+  }
+]

@@ -1,4 +1,13 @@
 {
   "capital": 100.0,
-  "operaciones": []
+  "operaciones": [
+    {
+      "fecha": "2026-09-19T08:59:42.356466+00:00",
+      "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
+      "lado": "NO",
+      "monto": 10.0,
+      "cambio": 0.0024999999999999467,
+      "tipo": "SIMULACION"
+    }
+  ]
 }

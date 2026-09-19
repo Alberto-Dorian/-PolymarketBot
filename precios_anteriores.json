@@ -1,8 +1,8 @@
 {
   "xi-jinping-out-before-2027": {
     "pregunta": "Xi Jinping out before 2027?",
-    "si": 0.0395,
-    "no": 0.9605
+    "si": 0.0385,
+    "no": 0.9615
   },
   "will-gavin-newsom-win-the-2028-democratic-presidential-nomination-568": {
     "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
@@ -91,8 +91,8 @@
   },
   "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299": {
     "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
-    "si": 0.0225,
-    "no": 0.9775
+    "si": 0.02,
+    "no": 0.98
   },
   "will-gina-raimondo-win-the-2028-democratic-presidential-nomination-676": {
     "pregunta": "Will Gina Raimondo win the 2028 Democratic presidential nomination?",
