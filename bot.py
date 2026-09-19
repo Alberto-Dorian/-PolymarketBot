@@ -3,13 +3,14 @@ import urllib.request
 
 API_URL = (
     "https://gamma-api.polymarket.com/markets"
-    "?active=true&closed=false&limit=10"
+    "?active=true&closed=false&limit=50"
 )
 
 
 def obtener_mercados():
     print("🤖 PolymarketBot iniciando...")
     print("📡 Consultando mercados activos...")
+    print()
 
     try:
         request = urllib.request.Request(
@@ -29,11 +30,11 @@ def obtener_mercados():
         for i, market in enumerate(data, start=1):
             pregunta = market.get("question", "Sin nombre")
             slug = market.get("slug", "")
-            precio = market.get("outcomePrices", "")
+            precios = market.get("outcomePrices", "")
 
             print(f"{i}. {pregunta}")
             print(f"   Slug: {slug}")
-            print(f"   Precios: {precio}")
+            print(f"   Precios: {precios}")
             print()
 
     except Exception as error:
