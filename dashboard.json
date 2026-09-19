@@ -1,7 +1,7 @@
 {
   "estado": "ACTIVO",
   "modo": "SIMULACION",
-  "ultima_ejecucion": "2026-09-19T16:31:14.686272+00:00",
+  "ultima_ejecucion": "2026-09-19T18:57:17.166868+00:00",
   "capital": 100.0,
   "operaciones": 2,
   "nuevas_operaciones": 0,
@@ -9,85 +9,41 @@
   "mercados_guardados": 50,
   "mercados_comparados": 50,
   "movimientos_detectados": 0,
-  "mayor_movimiento": 0.0010000000000000009,
+  "mayor_movimiento": 0.0005000000000000004,
   "umbral": 0.002,
   "top_movimientos": [
     {
-      "pregunta": "Will Alexandria Ocasio-Cortez win the 2028 Democratic presidential nomination?",
-      "slug": "will-alexandria-ocasio-cortez-win-the-2028-democratic-presidential-nomination-653",
-      "movimiento": 0.0010000000000000009,
-      "cambio_si": -0.0010000000000000009,
-      "cambio_no": 0.0010000000000000009,
-      "precio_si": 0.1845,
-      "precio_no": 0.8155,
-      "porcentaje_si": -0.539083557951483,
-      "porcentaje_no": 0.12277470841006763
+      "pregunta": "Xi Jinping out before 2027?",
+      "slug": "xi-jinping-out-before-2027",
+      "movimiento": 0.0005000000000000004,
+      "cambio_si": -0.0005000000000000004,
+      "cambio_no": 0.0004999999999999449,
+      "precio_si": 0.036,
+      "precio_no": 0.964,
+      "porcentaje_si": -1.3698630136986314,
+      "porcentaje_no": 0.051894135962630504
     },
     {
-      "pregunta": "Will Josh Shapiro win the 2028 Democratic presidential nomination?",
-      "slug": "will-josh-shapiro-win-the-2028-democratic-presidential-nomination-977",
-      "movimiento": 0.0010000000000000009,
-      "cambio_si": -0.0010000000000000009,
-      "cambio_no": 0.0009999999999998899,
-      "precio_si": 0.062,
-      "precio_no": 0.938,
-      "porcentaje_si": -1.5873015873015885,
-      "porcentaje_no": 0.1067235859124749
-    },
-    {
-      "pregunta": "Will Rahm Emanuel win the 2028 Democratic presidential nomination?",
-      "slug": "will-rahm-emanuel-win-the-2028-democratic-presidential-nomination-299",
-      "movimiento": 0.0010000000000000009,
-      "cambio_si": -0.0010000000000000009,
-      "cambio_no": 0.0010000000000000009,
-      "precio_si": 0.0195,
-      "precio_no": 0.9805,
-      "porcentaje_si": -4.878048780487809,
-      "porcentaje_no": 0.10209290454313434
-    },
-    {
-      "pregunta": "Will James Talarico win the 2028 Democratic presidential nomination?",
-      "slug": "will-james-talarico-win-the-2028-democratic-presidential-nomination",
-      "movimiento": 0.0010000000000000009,
-      "cambio_si": 0.0010000000000000009,
-      "cambio_no": -0.0010000000000000009,
-      "precio_si": 0.0245,
-      "precio_no": 0.9755,
-      "porcentaje_si": 4.255319148936175,
-      "porcentaje_no": -0.10240655401945734
-    },
-    {
-      "pregunta": "Will Jon Stewart win the 2028 Democratic presidential nomination?",
-      "slug": "will-jon-stewart-win-the-2028-democratic-presidential-nomination-518",
-      "movimiento": 0.000500000000000056,
-      "cambio_si": 0.0005,
-      "cambio_no": -0.000500000000000056,
-      "precio_si": 0.004,
-      "precio_no": 0.996,
-      "porcentaje_si": 14.285714285714285,
-      "porcentaje_no": -0.05017561465128509
+      "pregunta": "Will Mark Kelly win the 2028 Democratic presidential nomination?",
+      "slug": "will-mark-kelly-win-the-2028-democratic-presidential-nomination-479",
+      "movimiento": 0.0005000000000000004,
+      "cambio_si": -0.0005000000000000004,
+      "cambio_no": 0.0004999999999999449,
+      "precio_si": 0.03,
+      "precio_no": 0.97,
+      "porcentaje_si": -1.6393442622950833,
+      "porcentaje_no": 0.051572975760695715
     },
     {
       "pregunta": "Will Chelsea Clinton win the 2028 Democratic presidential nomination?",
       "slug": "will-chelsea-clinton-win-the-2028-democratic-presidential-nomination",
-      "movimiento": 0.000500000000000056,
-      "cambio_si": -0.0005000000000000004,
-      "cambio_no": 0.000500000000000056,
-      "precio_si": 0.0065,
-      "precio_no": 0.9935,
-      "porcentaje_si": -7.1428571428571495,
-      "porcentaje_no": 0.05035246727090191
-    },
-    {
-      "pregunta": "Xi Jinping out before 2027?",
-      "slug": "xi-jinping-out-before-2027",
-      "movimiento": 0.0,
-      "cambio_si": 0.0,
-      "cambio_no": 0.0,
-      "precio_si": 0.0365,
-      "precio_no": 0.9635,
-      "porcentaje_si": 0.0,
-      "porcentaje_no": 0.0
+      "movimiento": 0.0004999999999999996,
+      "cambio_si": -0.0004999999999999996,
+      "cambio_no": 0.0004999999999999449,
+      "precio_si": 0.006,
+      "precio_no": 0.994,
+      "porcentaje_si": -7.692307692307685,
+      "porcentaje_no": 0.05032712632108152
     },
     {
       "pregunta": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
@@ -97,6 +53,17 @@
       "cambio_no": 0.0,
       "precio_si": 0.1595,
       "precio_no": 0.8405,
+      "porcentaje_si": 0.0,
+      "porcentaje_no": 0.0
+    },
+    {
+      "pregunta": "Will Alexandria Ocasio-Cortez win the 2028 Democratic presidential nomination?",
+      "slug": "will-alexandria-ocasio-cortez-win-the-2028-democratic-presidential-nomination-653",
+      "movimiento": 0.0,
+      "cambio_si": 0.0,
+      "cambio_no": 0.0,
+      "precio_si": 0.1845,
+      "precio_no": 0.8155,
       "porcentaje_si": 0.0,
       "porcentaje_no": 0.0
     },
@@ -112,6 +79,17 @@
       "porcentaje_no": 0.0
     },
     {
+      "pregunta": "Will Josh Shapiro win the 2028 Democratic presidential nomination?",
+      "slug": "will-josh-shapiro-win-the-2028-democratic-presidential-nomination-977",
+      "movimiento": 0.0,
+      "cambio_si": 0.0,
+      "cambio_no": 0.0,
+      "precio_si": 0.062,
+      "precio_no": 0.938,
+      "porcentaje_si": 0.0,
+      "porcentaje_no": 0.0
+    },
+    {
       "pregunta": "Will Wes Moore win the 2028 Democratic presidential nomination?",
       "slug": "will-wes-moore-win-the-2028-democratic-presidential-nomination-714",
       "movimiento": 0.0,
@@ -119,6 +97,28 @@
       "cambio_no": 0.0,
       "precio_si": 0.0175,
       "precio_no": 0.9825,
+      "porcentaje_si": 0.0,
+      "porcentaje_no": 0.0
+    },
+    {
+      "pregunta": "Will Stephen A. Smith win the 2028 Democratic presidential nomination?",
+      "slug": "will-stephen-a-smith-win-the-2028-democratic-presidential-nomination-914",
+      "movimiento": 0.0,
+      "cambio_si": 0.0,
+      "cambio_no": 0.0,
+      "precio_si": 0.0015,
+      "precio_no": 0.9985,
+      "porcentaje_si": 0.0,
+      "porcentaje_no": 0.0
+    },
+    {
+      "pregunta": "Will Kamala Harris win the 2028 Democratic presidential nomination?",
+      "slug": "will-kamala-harris-win-the-2028-democratic-presidential-nomination-641",
+      "movimiento": 0.0,
+      "cambio_si": 0.0,
+      "cambio_no": 0.0,
+      "precio_si": 0.0965,
+      "precio_no": 0.9035,
       "porcentaje_si": 0.0,
       "porcentaje_no": 0.0
     }
